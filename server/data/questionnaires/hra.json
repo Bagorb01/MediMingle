@@ -1,0 +1,29 @@
+{
+    "questions": [
+        {
+            "id": 1,
+            "question": "What brings you in today?",
+            "type": "text"
+        },
+        {
+            "id": 2,
+            "question": "How long have you been experiencing these symptoms?",
+            "type": "text"
+        },
+        {
+            "id": 3,
+            "question": "On a scale of 1 to 10, how severe are your symptoms?",
+            "type": "text"
+        },
+        {
+            "id": 4,
+            "question": "Have you tried any treatments or medications for your symptoms? If so, what were they and did they help?",
+            "type": "text"
+        },
+        {
+            "id": 5,
+            "question": "Do you have any other health conditions or concerns that you would like to share with me?",
+            "type": "text"
+        }
+    ]
+}
