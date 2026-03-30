@@ -12,6 +12,7 @@
 		"cf-typegen": "wrangler types"
 	},
 	"dependencies": {
+		"@nuxt/ui": "^4.6.0",
 		"@openai/agents": "^0.8.1",
 		"nuxt": "^4.4.2",
 		"vue": "^3.5.30",

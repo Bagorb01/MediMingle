@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="startRecording">
+    <button :disabled="props.isDisabled" @click="startRecording">
         <img :src="props.isRecording ? '/mic_on.svg' : '/mic_off.svg'" alt="Record" />
     </button>
   </div>
@@ -9,6 +9,7 @@
 <script lang="ts" setup>
 const props = defineProps({
   isRecording: { type: Boolean, required: true },
+  isDisabled: { type: Boolean, required: true },
 });
 
 const startRecording = async () => {
@@ -25,5 +26,10 @@ button {
     border: none;
     padding: 1rem;
     margin-top: 16px;
+}
+
+button:disabled {
+    background-color: #3f3d56;
+    cursor: not-allowed;
 }
 </style>

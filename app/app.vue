@@ -15,29 +15,24 @@
     <div class="form-section">
       <div class="chat-area">
         <InstructionsView v-if="!isConnected" @startInterview="connect" />
-        <div v-for="item in history" :key="item.itemId">
-          <div v-if="item.type === 'message' && item.status === 'completed'">
-            <ChatBubble
+        <template v-for="item in history" :key="item.itemId">
+            <ChatBubble v-if="item.type === 'message' && item.status === 'completed'"
               :is-patient="item.role === 'user'"
               :message="
                 item.content[0].transcript ? item.content[0].transcript : ''
               "
             />
-          </div>
-          <div
-            v-else-if="item.type === 'message' && item.status === 'in_progress'"
-          >
-            <ChatBubble
+            <ChatBubble v-else-if="item.type === 'message' && item.status === 'in_progress'"
               :is-patient="item.role === 'user'"
               :is-loading="true"
               message=""
             />
-          </div>
-        </div>
+        </template>
       </div>
       <RecordButton
         @click="isRecording = !isRecording"
         :is-recording="isRecording"
+        :is-disabled="!isConnected"
       />
     </div>
   </div>
@@ -118,8 +113,7 @@ h1 {
 }
 
 .chat-area {
-  min-height: 625px;
-  max-height: 100%;
+  height: 625px;
   width: 100%;
   overflow-y: scroll;
   display: flex;
