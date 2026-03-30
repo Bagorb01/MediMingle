@@ -1,12 +1,12 @@
 // server/api/chat.post.ts
-import questions from "../../data/questionnaires/hra.json";
+import { hraQuestions } from "../../data/questionnaires/hra";
 
 export default defineEventHandler(async (event) => {
   const { cloudflare } = event.context;
   const { messages } = await readBody(event);
 
-  const questionList = questions.questions
-    .map((q, i) => `${i + 1}. ${q.question}`)
+  const questionList = hraQuestions
+    .map((q, i) => `${i + 1}. ${q}`)
     .join('\n')
 
   const result = await cloudflare.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {

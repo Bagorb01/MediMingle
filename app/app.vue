@@ -13,22 +13,28 @@
     </div>
 
     <div class="form-section">
-      <USwitch v-model="useOpenAI" class="switch" label="OpenAI" color="neutral" te/>
       <div class="chat-area">
-        <InstructionsView v-if="!interviewStarted" @startInterview="startInterview" />
-        <ChatBubble
-          v-if="interviewStarted && !isLoading"
-          v-for="value in messages"
-          :key="value.message"
-          :is-patient="value.isPatient"
-          :message="value.message"
-        />
-        <ChatBubble
-          v-if="interviewStarted && isLoading"
-          :is-loading="isLoading"
-        />
+        <InstructionsView v-if="!isConnected" @startInterview="connect" />
+        <div v-for="item in history" :key="item.itemId">
+          <div v-if="item.type === 'message' && item.status === 'completed'">
+            <ChatBubble
+              :is-patient="item.role === 'user'"
+              :message="
+                item.content[0].transcript ? item.content[0].transcript : ''
+              "
+            />
+          </div>
+          <div
+            v-else-if="item.type === 'message' && item.status === 'in_progress'"
+          >
+            <ChatBubble
+              :is-patient="item.role === 'user'"
+              :is-loading="true"
+              message=""
+            />
+          </div>
+        </div>
       </div>
-
       <RecordButton
         @click="isRecording = !isRecording"
         :is-recording="isRecording"
@@ -38,32 +44,11 @@
 </template>
 
 <script setup lang="ts">
-import { sendMessage, synthesize } from './services/cloudflareServices';
+import { useVoiceSession } from "./composables/useVoiceSession";
 
-interface ChatMessage {
-  isPatient?: boolean;
-  message?: string;
-  isLoading?: boolean;
-}
-
-const interviewStarted = ref(false);
-const isLoading = ref(true);
-const messages = ref<ChatMessage[]>([]);
 const isRecording = ref(false);
-const useOpenAI = ref(false)
-
-async function startInterview() {
-  interviewStarted.value = true;
-  const message = await sendMessage(messages.value);
-
-  messages.value.push({
-    isPatient: false,
-    message: message,
-    isLoading: false,
-  });
-
-  await synthesize(message);
-}
+const { history, isConnected, isConnecting, error, connect } =
+  useVoiceSession();
 </script>
 
 <style scoped>
@@ -72,8 +57,7 @@ async function startInterview() {
   background: linear-gradient(
     90deg,
     rgb(168, 167, 243) 0%,
-    /* rgba(93, 87, 199, 0.48) 0%, */
-    rgba(250, 250, 250, 1) 100%
+    /* rgba(93, 87, 199, 0.48) 0%, */ rgba(250, 250, 250, 1) 100%
   );
   display: flex;
   flex-direction: row;
@@ -126,11 +110,6 @@ h1 {
 
 /* ---------------------- ----- */
 
-.switch {
-  align-self: flex-end;
-  margin-bottom: 1rem;
-}
-
 .form-section {
   display: flex;
   flex-direction: column;
@@ -141,11 +120,14 @@ h1 {
 
 .chat-area {
   min-height: 625px;
+  max-height: 100%;
   width: 100%;
+
+  overflow-y: scroll;
+
   display: flex;
   flex-direction: column;
-  max-height: 100%;
-  overflow-y: scroll;
+
   background: white;
   border-radius: 16px;
   background:

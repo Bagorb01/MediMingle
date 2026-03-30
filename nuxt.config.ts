@@ -14,5 +14,5 @@ export default defineNuxtConfig({
     }
   },
 
-  modules: ["nitro-cloudflare-dev", '@nuxt/ui']
+  modules: ["nitro-cloudflare-dev", '@nuxt/ui'],
 })
