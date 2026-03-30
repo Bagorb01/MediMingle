@@ -47,8 +47,7 @@
 import { useVoiceSession } from "./composables/useVoiceSession";
 
 const isRecording = ref(false);
-const { history, isConnected, isConnecting, error, connect } =
-  useVoiceSession();
+const { history, isConnected, connect } = useVoiceSession();
 </script>
 
 <style scoped>
@@ -122,12 +121,9 @@ h1 {
   min-height: 625px;
   max-height: 100%;
   width: 100%;
-
   overflow-y: scroll;
-
   display: flex;
   flex-direction: column;
-
   background: white;
   border-radius: 16px;
   background:
