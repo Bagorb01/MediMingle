@@ -45,6 +45,7 @@ export function useVoiceSession() {
 
       session.on("history_updated", (updatedHistory) => {
         history.value = [...updatedHistory];
+        console.log("History updated:", updatedHistory);
       });
 
       const token = await fetchToken();

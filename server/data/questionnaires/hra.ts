@@ -4,7 +4,7 @@ export const hraQuestions = [
     "What is your height and weight?",
     "What is your biological sex?",
     "What is your preferred language?",
-    "Have you ever been diagnosed with any of the following? (Select all that apply)",
+    "Have you ever been diagnosed with any of the following? (Select all that apply) - diabetes, hypertension, heart disease, asthma/COPD, kidney disease, liver disease, cancer, depression/anxiety, arthritis, osteoporosis, cognitive impairment/dementia",
     "Are your chronic conditions currently being managed by a doctor?",
     "In the past 12 months, have you been hospitalized or visited an emergency room?",
     "Do you take 5 or more prescription medications daily?",
@@ -29,7 +29,7 @@ export const hraQuestions = [
     "How often do you consume alcohol?",
     "How many days per week do you engage in physical activity for at least 30 minutes?",
     "How would you describe your typical diet?",
-    "Are you up to date on the following screenings/vaccines? (Select all that apply)",
+    "Are you up to date on the following screenings/vaccines? (Select all that apply) - colonoscopy, mammogram, Pap smear, prostate exam, flu shot, COVID-19 vaccine, pneumonia vaccine",
     "Do you have an advance directive or living will?",
     "Have you designated a healthcare proxy or power of attorney?",
     "Have you discussed your end-of-life care wishes with your doctor or family?"

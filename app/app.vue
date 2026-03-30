@@ -13,7 +13,7 @@
     </div>
 
     <div class="form-section">
-      <div class="chat-area">
+      <div class="chat-area" ref="scrollRef">
         <InstructionsView v-if="!isConnected"  @startInterview="connect"/>
         <StartChat v-if="isConnected && history.length === 0" />
         <template v-for="item in history" :key="item.itemId">
@@ -43,7 +43,15 @@
 import { useVoiceSession } from "./composables/useVoiceSession";
 
 const isRecording = ref(false);
+const scrollRef = ref()
 const { history, isConnected, connect } = useVoiceSession();
+
+watch(history, async () => {
+  await nextTick(); // wait for DOM to update first
+  if (scrollRef.value) {
+    scrollRef.value.scrollTop = scrollRef.value.scrollHeight;
+  }
+});
 </script>
 
 <style scoped>
@@ -116,7 +124,8 @@ h1 {
 .chat-area {
   height: 625px;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
+  scrollbar-track-color: #3f3d56;
   display: flex;
   flex-direction: column;
   background: white;
