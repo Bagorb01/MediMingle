@@ -14,7 +14,8 @@
 
     <div class="form-section">
       <div class="chat-area">
-        <InstructionsView v-if="!isConnected" @startInterview="connect" />
+        <InstructionsView v-if="!isConnected"  @startInterview="connect"/>
+        <StartChat v-if="isConnected && history.length === 0" />
         <template v-for="item in history" :key="item.itemId">
             <ChatBubble v-if="item.type === 'message' && item.status === 'completed'"
               :is-patient="item.role === 'user'"
