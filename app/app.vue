@@ -14,27 +14,32 @@
 
     <div class="form-section">
       <div class="chat-area" ref="scrollRef">
-        <InstructionsView v-if="!isConnected"  @startInterview="connect"/>
+        <InstructionsView v-if="!isConnected" @startInterview="connect" />
         <StartChat v-if="isConnected && history.length === 0" />
         <template v-for="item in history" :key="item.itemId">
-            <ChatBubble v-if="item.type === 'message' && item.status === 'completed'"
-              :is-patient="item.role === 'user'"
-              :message="
-                item.content[0].transcript ? item.content[0].transcript : ''
-              "
-            />
-            <ChatBubble v-else-if="item.type === 'message' && item.status === 'in_progress'"
-              :is-patient="item.role === 'user'"
-              :is-loading="true"
-              message=""
-            />
+          <ChatBubble
+            v-if="item.type === 'message' && item.status === 'completed'"
+            :is-patient="item.role === 'user'"
+            :message="
+              item.content[0].transcript ? item.content[0].transcript : ''
+            "
+          />
+          <ChatBubble
+            v-else-if="item.type === 'message' && item.status === 'in_progress'"
+            :is-patient="item.role === 'user'"
+            :is-loading="true"
+            message=""
+          />
         </template>
+        <div class="controls">
+          <RecordButton
+            @toggleMic="muteMic"
+            :isMicMuted="isMicMuted"
+            :isDisabled="!isConnected"
+          />
+          <CallEndButton @end-session="disconnect" :isDisabled="!isConnected" />
+        </div>
       </div>
-      <RecordButton
-        @click="isRecording = !isRecording"
-        :is-recording="isRecording"
-        :is-disabled="!isConnected"
-      />
     </div>
   </div>
 </template>
@@ -42,12 +47,12 @@
 <script setup lang="ts">
 import { useVoiceSession } from "./composables/useVoiceSession";
 
-const isRecording = ref(false);
-const scrollRef = ref()
-const { history, isConnected, connect } = useVoiceSession();
+const scrollRef = ref();
+const { history, isConnected, isMicMuted, connect, muteMic, disconnect } =
+  useVoiceSession();
 
 watch(history, async () => {
-  await nextTick(); // wait for DOM to update first
+  await nextTick();
   if (scrollRef.value) {
     scrollRef.value.scrollTop = scrollRef.value.scrollHeight;
   }
@@ -118,11 +123,12 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 40%;
+  width: 730px;
+  /* height: 740px; */
 }
 
 .chat-area {
-  height: 625px;
+  height: 740px;
   width: 100%;
   overflow-y: auto;
   scrollbar-track-color: #3f3d56;
@@ -135,5 +141,14 @@ h1 {
     linear-gradient(135deg, #a78bfa, #7c3aed) border-box;
   border: 2px solid transparent;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  padding-bottom: 1rem;
 }
 </style>

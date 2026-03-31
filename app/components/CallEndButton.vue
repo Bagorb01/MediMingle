@@ -1,14 +1,13 @@
 <template>
   <div>
-    <button :disabled="props.isDisabled" @click="$emit('toggleMic')">
-        <img :src="props.isMicMuted ? '/mic_off.svg' : '/mic_on.svg'" alt="Record" />
+    <button :disabled="props.isDisabled" @click="$emit('end-session')">
+        <img src="/close.svg" alt="End call" />
     </button>
   </div>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps({
-  isMicMuted: { type: Boolean, required: true },
   isDisabled: { type: Boolean, required: true },
 });
 
@@ -17,7 +16,7 @@ const props = defineProps({
 <style scoped>
 button {
     border-radius: 50%;
-    background-color: #6c63ff;
+    background-color: #a81212;
     border: none;
     padding: 1rem;
     margin-top: 16px;

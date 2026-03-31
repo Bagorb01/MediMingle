@@ -8,8 +8,9 @@ import {
 import hraPrompt from "~~/server/data/prompts/hra";
 
 const history = ref<RealtimeItem[]>([]);
-const isConnected = ref(false);
-const isConnecting = ref(false);
+const isConnected = ref<boolean>(false);
+const isConnecting = ref<boolean>(false);
+const isMicMuted = ref<boolean>(true);
 const error = ref<Error | null>(null);
 
 let session: RealtimeSession | null = null;
@@ -26,6 +27,7 @@ export function useVoiceSession() {
 
   async function connect() {
     isConnecting.value = true;
+    isMicMuted.value = false;
     error.value = null;
 
     try {
@@ -40,12 +42,12 @@ export function useVoiceSession() {
           inputAudioTranscription: {
             model: "gpt-4o-mini-transcribe",
           },
+          model: "gpt-realtime-mini",
         },
       });
 
       session.on("history_updated", (updatedHistory) => {
         history.value = [...updatedHistory];
-        console.log("History updated:", updatedHistory);
       });
 
       const token = await fetchToken();
@@ -61,18 +63,33 @@ export function useVoiceSession() {
     }
   }
 
-//   function disconnect() {
-//     session = null;
-//     isConnected.value = false;
-//     history.value = [];
-//   }
+  function muteMic() {
+    isMicMuted.value = !isMicMuted.value;
+
+    if (session) {
+      session.mute(isMicMuted.value);
+    } else {
+      console.warn("No active session to mute/unmute microphone.");
+    }
+  }
+
+  function disconnect() {
+    if (session) {
+      session.close();
+      session = null;
+      isConnected.value = false;
+      history.value = [];
+    }
+  }
 
   return {
     history,
+    isMicMuted,
     isConnected,
     isConnecting,
     error,
+    muteMic,
     connect,
-    // disconnect,
+    disconnect,
   };
 }
