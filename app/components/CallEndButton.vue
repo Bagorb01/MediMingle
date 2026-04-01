@@ -1,7 +1,7 @@
 <template>
   <div>
     <button :disabled="props.isDisabled" @click="$emit('end-session')">
-        <img src="/close.svg" alt="End call" />
+        <img :src="props.isDisabled ? '/close_disabled.svg' : '/close.svg'" alt="End call" />
     </button>
   </div>
 </template>
@@ -23,7 +23,7 @@ button {
 }
 
 button:disabled {
-    background-color: #3f3d56;
+    background-color: #d3d3d3;
     cursor: not-allowed;
 }
 </style>

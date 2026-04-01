@@ -21,21 +21,21 @@ const props = defineProps({
 </script>
 
 <style lang="css" scoped>
-.bubble-incoming {
-  background: #f0f0f0;
+.bubble-incoming,
+.bubble-outgoing {
   border-radius: 16px;
   max-width: 60%;
   padding: 1rem;
   margin: 1rem;
 }
 
+.bubble-incoming {
+  background: #efeff1;
+}
+
 .bubble-outgoing {
   background: #a78bfaa2;
-  border-radius: 16px;
-  align-self: flex-end;
-  max-width: 60%;
-  padding: 1rem;
-  margin: 1rem;
+  justify-self: flex-end;
 }
 
 .message {

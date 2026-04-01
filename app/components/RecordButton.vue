@@ -1,7 +1,8 @@
 <template>
   <div>
     <button :disabled="props.isDisabled" @click="$emit('toggleMic')">
-        <img :src="props.isMicMuted ? '/mic_off.svg' : '/mic_on.svg'" alt="Record" />
+        <img v-if="props.isDisabled" src="/mic_off_disabled.svg" alt="Microphone disabled" />
+        <img v-else :src="props.isMicMuted ? '/mic_off.svg' : '/mic_on.svg'" alt="Toggle microphone" />
     </button>
   </div>
 </template>
@@ -24,7 +25,7 @@ button {
 }
 
 button:disabled {
-    background-color: #3f3d56;
+    background-color: #d3d3d3;
     cursor: not-allowed;
 }
 </style>
